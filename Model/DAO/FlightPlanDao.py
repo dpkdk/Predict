@@ -24,12 +24,14 @@ class FlightPlanDao:
         dataframe = self.read_flightplan()  # dataframe[0]为要插入的一条数据
         for data in dataframe:
             print(data)
-            self.fp.insert_table(data)
+            if self.fp.select_from_FD1(data) == ():
+                self.fp.insert_table(data)
+
 
     # 查询特定周几航班计划
     def select_weekplan(self):
         weeklist = [1, 0, 1, 0, 0, 0, 0]  # 等效于..1...1
-        res = self.fp.select_FD1245678910111213_from_Z(weeklist)
+        res = self.fp.select_FD1245678910111213_from_onlyZ(weeklist)
 
     # 查询周几有飞行计划的所有航班
     def select_zplan(self, z):
@@ -47,7 +49,6 @@ class FlightPlanDao:
     def calculate_weekly_flight_volume(self):
         weeklist = list(self.weekday_map.values())
         weekly_flight_volume = []
-        print(weeklist)
         for z in weeklist:
             zvolume = len(self.select_zplan(z))
             weekly_flight_volume.append(zvolume)
