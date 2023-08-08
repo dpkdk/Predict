@@ -5,9 +5,7 @@ from Model.DAO.AircraftRegistrationDao import AircraftRegistrationDao
 from Model.DAO.BaseDao import BaseDao
 from Model.DAO.FlightHoursDao import FlightHoursDao
 from Model.DAO.FlightPlanDao import FlightPlanDao
-
-
-
+from Model.DAO.IssuanceDao import IssuanceDao
 
 '''
 1.基地，三字码，四字码查询入库，，找关系，，基地、机场
@@ -34,6 +32,11 @@ def flihthours_business():
     fh_dao.write_flighthours()
 
 
+def issuance_business():
+    issuance_dao = IssuanceDao(db)
+    issuance_dao.write_issuance()
+
+
 
 
 if __name__ == '__main__':
@@ -47,7 +50,8 @@ if __name__ == '__main__':
     # flightplan_business()
     # aircraftregistration_business()
     # base_business()
-    flihthours_business()
+    # flihthours_business()
+    issuance_business()
 
 
 
