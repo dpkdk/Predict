@@ -6,6 +6,8 @@ from Model.DAO.BaseDao import BaseDao
 from Model.DAO.FlightHoursDao import FlightHoursDao
 from Model.DAO.FlightPlanDao import FlightPlanDao
 from Model.DAO.IssuanceDao import IssuanceDao
+from Model.DAO.ReplacementPartsDao import ReplacementPartsDao
+from Model.DAO.WarehouseDao import WarehouseDao
 
 '''
 1.基地，三字码，四字码查询入库，，找关系，，基地、机场
@@ -36,6 +38,16 @@ def issuance_business():
     issuance_dao = IssuanceDao(db)
     issuance_dao.write_issuance()
 
+def replacementparts_business():
+    rp = ReplacementPartsDao(db)
+    # rp.write_replacement_parts()
+    # rp.get_total_replacement_count_by_all_registration()
+    rp.get_part_replacement_count_by_all_registration()
+
+def warehouse_business():
+    warehouse = WarehouseDao(db)
+    warehouse.write_warehouse()
+
 
 
 
@@ -51,7 +63,9 @@ if __name__ == '__main__':
     # aircraftregistration_business()
     # base_business()
     # flihthours_business()
-    issuance_business()
+    # issuance_business()
+    replacementparts_business()
+    # warehouse_business()
 
 
 

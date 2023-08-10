@@ -1,4 +1,5 @@
 from datetime import date
+from datetime import datetime, timedelta
 
 
 def flight_schedule_to_list(schedule_str):
@@ -19,3 +20,52 @@ def get_weekday(year, month, day):
     """
     weekday = date(year, month, day).weekday()
     return weekday
+
+
+def datetime_to_string(dt):
+    """
+    规范读入数据日期，datetime.datetime(2023, 5, 16, 0, 0) -> ‘2023-05-16’
+    """
+    return dt.strftime('%Y-%m-%d')
+
+
+def generate_dates(start_date, end_date):
+    """
+    生成指定日期中间所有日期
+    """
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+    all_dates = []
+
+    # 遍历从开始日期到结束日期的每一天
+    current_date = start_date
+    while current_date <= end_date:
+        # 将当前日期添加到列表中
+        all_dates.append(current_date.strftime("%Y-%m-%d"))
+        # 增加一天
+        current_date += timedelta(days=1)
+
+    return all_dates
+
+
+def generate_replacement_date_list(start_date, end_date, replacement_info):
+    """
+    :param replacement_info: 二维数组,replacement_info[0]为时间，replacement_info[1]为对应时间发生拆换次数
+    """
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+    info_list = []
+
+    current_date = start_date
+    while current_date <= end_date:
+        current_date_str = current_date.strftime("%Y-%m-%d")  # 下面判断日期是否存在时需要str
+        if current_date_str in replacement_info[0]:
+            index = replacement_info[0].index(current_date_str)
+            replacement_num = replacement_info[1][index]
+            info_list.append(replacement_num)
+        else:
+            info_list.append(0)
+        current_date += timedelta(days=1)
+
+    return info_list
+

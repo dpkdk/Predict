@@ -46,6 +46,18 @@ class AircraftRegistration:
         except Exception as e:
             print("Error executing SQL statement:", e)
 
+    # 根据id查询该机号
+    def select_registration_from_id(self, registration_id):
+        sql = "SELECT registration FROM aircraft_registration WHERE id=%s"
+        params = registration_id
+        # print(sql % params)
+        try:
+            self.cursor.execute(sql, params)
+            results = self.cursor.fetchall()
+            return results
+        except Exception as e:
+            print("Error executing SQL statement:", e)
+
 
 
 

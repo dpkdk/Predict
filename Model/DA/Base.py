@@ -46,6 +46,18 @@ class Base:
         except Exception as e:
             print("Error executing SQL statement:", e)
 
+    # 已知IATA得到数据项id
+    def select_id_from_IATA(self, IATA):
+        sql = "SELECT id FROM base WHERE IATA=%s"
+        params = IATA
+        # print(sql % params)
+        try:
+            self.cursor.execute(sql, params)
+            results = self.cursor.fetchall()
+            return results
+        except Exception as e:
+            print("Error executing SQL statement:", e)
+
 
 
 
