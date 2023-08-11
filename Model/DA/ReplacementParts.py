@@ -95,6 +95,30 @@ class ReplacementParts:
         except Exception as e:
             print("Error executing SQL statement:", e)
 
+    # 获取所有零件号
+    def select_part_number_group(self):
+        sql = "SELECT removed_part_number,COUNT(*) from replacement_parts WHERE part_type='ROTB' GROUP BY removed_part_number order by COUNT(*) desc"
+        params = ()
+        # print(sql % params)
+        try:
+            self.cursor.execute(sql, params)
+            results = self.cursor.fetchall()
+            return results
+        except Exception as e:
+            print("Error executing SQL statement:", e)
+
+    # 获取指定零件号的所有拆换记录（按日期计数版
+    def select_date_count_by_part_number(self, part_number):
+        sql = "SELECT removed_part_number,remove_date,COUNT(*) FROM replacement_parts WHERE removed_part_number=%s and part_type='ROTB' GROUP BY removed_part_number,remove_date"
+        params = part_number
+        # print(sql % params)
+        try:
+            self.cursor.execute(sql, params)
+            results = self.cursor.fetchall()
+            return results
+        except Exception as e:
+            print("Error executing SQL statement:", e)
+
 
 
 

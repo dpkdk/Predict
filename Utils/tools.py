@@ -69,3 +69,41 @@ def generate_replacement_date_list(start_date, end_date, replacement_info):
 
     return info_list
 
+
+def aggregate_data_by_month(start_date, end_date, data):
+    """
+    整合以日为单位成以月成单位
+    """
+    # 初始化月份数据字典
+    monthly_data = {}
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+
+    # 遍历日期范围内的每一天
+    current_date = start_date
+    while current_date <= end_date:
+        # 获取当前日期的年份和月份
+        year = current_date.year
+        month = current_date.month
+
+        # 构建当前日期的键
+        key = f"{year}-{month:02d}"
+
+        # 如果当前键不存在，则初始化值为0
+        if key not in monthly_data:
+            monthly_data[key] = 0
+
+        # 将当前日期的数据累加到对应的月份中
+        idx = (current_date - start_date).days
+        monthly_data[key] += data[idx]
+
+        # 增加一天
+        current_date += timedelta(days=1)
+
+    # 将月份数据存储到列表中
+    keys_list = list(monthly_data.keys())
+    result = list(monthly_data.values())
+    # print(monthly_data)
+
+    return keys_list, result
+

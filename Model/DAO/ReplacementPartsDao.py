@@ -78,8 +78,12 @@ class ReplacementPartsDao:
             part_number = part[1]
             replacement_list = self.get_part_replacement_by_part_number(registration_id, part_number)
             '''可以写入数据库'''
-            print(f"件号", {part_number})
-            print(replacement_list)
+            print("件号", part_number)
+            print("按日", generate_dates("2022-06-30", "2023-07-01"))
+            print("按日", replacement_list)
+            key_lst, lst = aggregate_data_by_month("2022-06-30", "2023-07-01", replacement_list)
+            print("按月", key_lst)
+            print("按月", lst)
 
     # 返回指定一个机号中的一个件号发生拆换时间列表
     def get_part_replacement_by_part_number(self, registration_id, part_number):
@@ -91,3 +95,37 @@ class ReplacementPartsDao:
             # print(f"id={res[0]}, {res[1]}在{res[2]}发生{res[3]}次拆换")
         replacement_list = generate_replacement_date_list("2022-06-30", "2023-07-01", replacement_info)
         return replacement_list
+
+
+    # 获取所有零件拆换信息
+    def get_replacement_count_part(self):
+        part_number_result = self.rp.select_part_number_group()
+        for part_number in part_number_result:
+            replacement_list = self.get_replacement_by_part_number(part_number[0])  # part_number[0]是partnumber[1]是count
+            '''可以写入数据库'''
+            print("件号", part_number)
+            print("按日", generate_dates("2022-06-30", "2023-07-01"))
+            print("按日", replacement_list)
+            key_lst, lst = aggregate_data_by_month("2022-06-30", "2023-07-01", replacement_list)
+            print("按月", key_lst)
+            print("按月", lst)
+
+
+    # 获取一个零件拆换发生时间
+    def get_replacement_by_part_number(self, part_number):
+        replacement_result = self.rp.select_date_count_by_part_number(part_number)  # 由件号名称查询得到具体拆换条目（按日期分类
+        replacement_info = [[] for _ in range(2)]
+        for res in replacement_result:  # 列出拆换时间
+            replacement_info[0].append(res[1])
+            replacement_info[1].append(res[2])
+            # print(f"id={res[0]}, {res[1]}在{res[2]}发生{res[3]}次拆换")
+        replacement_list = generate_replacement_date_list("2022-06-30", "2023-07-01", replacement_info)
+        return replacement_list
+
+
+    # 统计各件号发生周转件拆换总次数,按次数降序-->可直接得到需要机型列表
+    def get_total_replacement_count_by_all_part_number(self):
+        result = self.rp.select_part_number_group()
+        for res in result:
+            print(f"件号{res[0]}拆换次数为{res[1]}")
+

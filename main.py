@@ -42,7 +42,9 @@ def replacementparts_business():
     rp = ReplacementPartsDao(db)
     # rp.write_replacement_parts()
     # rp.get_total_replacement_count_by_all_registration()
-    rp.get_part_replacement_count_by_all_registration()
+    # rp.get_part_replacement_count_by_all_registration()  # 按机号、机号中的件号
+    rp.get_replacement_count_part()  # 按件号
+    # rp.get_total_replacement_count_by_all_part_number()  # 各件号所有时间发生拆换次数
 
 def warehouse_business():
     warehouse = WarehouseDao(db)
